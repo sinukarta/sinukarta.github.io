@@ -838,6 +838,13 @@ button {
   grid-auto-rows: minmax(280px, auto);
   gap: var(--space-6);
   margin-top: var(--space-12);
+  grid-auto-flow: dense;
+}
+
+@media (max-width: 1024px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .project-card {
@@ -1307,6 +1314,14 @@ button {
 
   .testimonials-grid {
     grid-template-columns: 1fr;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card.featured {
+    grid-column: span 1;
   }
 }
 
