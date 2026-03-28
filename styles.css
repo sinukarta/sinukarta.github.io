@@ -612,14 +612,7 @@ button {
   line-height: 1.8;
 }
 
-.about-text p:first-child::first-letter {
-  font-size: 3em;
-  float: left;
-  line-height: 1;
-  margin-right: 0.1em;
-  color: var(--accent);
-  font-weight: 700;
-}
+
 
 /* Metrics Strip */
 .metrics-strip {
@@ -1039,6 +1032,219 @@ button {
 .speaking-link svg {
   width: 14px;
   height: 14px;
+}
+
+/* ─── ABOUT PORTRAIT ─── */
+.about-portrait {
+  margin-bottom: var(--space-8);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.about-portrait img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.about-portrait:hover img {
+  transform: scale(1.03);
+}
+
+.about-text p:first-of-type::first-letter {
+  font-size: 3em;
+  float: left;
+  line-height: 1;
+  margin-right: 0.1em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ─── SPEAKING HERO IMAGE ─── */
+.speaking-hero {
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-8);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  max-height: 450px;
+}
+
+.speaking-hero-img {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+
+.speaking-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, var(--bg-primary), transparent);
+  pointer-events: none;
+}
+
+/* ─── VIDEO GRID (YouTube Embeds) ─── */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.video-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out-expo);
+}
+
+.video-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.video-embed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.video-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-info {
+  padding: var(--space-6);
+}
+
+.video-info .speaking-emoji {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-2);
+}
+
+.video-info .speaking-title {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-2);
+}
+
+.video-info .speaking-desc {
+  font-size: var(--text-sm);
+  margin-bottom: 0;
+}
+
+/* ─── BEYOND WORK SECTION ─── */
+.beyond-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: center;
+  margin-top: var(--space-12);
+}
+
+.beyond-image {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.beyond-image img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.beyond-image:hover img {
+  transform: scale(1.03);
+}
+
+.beyond-content p {
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  margin-bottom: var(--space-6);
+  color: var(--text-secondary);
+}
+
+.beyond-quote {
+  font-size: var(--text-2xl) !important;
+  font-weight: 700;
+  color: var(--text-primary) !important;
+  font-style: italic;
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-8) !important;
+  line-height: 1.4 !important;
+}
+
+.beyond-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.beyond-tag {
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all var(--duration-fast);
+}
+
+.beyond-tag:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+@media (max-width: 768px) {
+  .beyond-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .beyond-image img {
+    height: 350px;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .speaking-hero-img {
+    height: 280px;
+  }
+
+  .about-portrait img {
+    height: 300px;
+  }
 }
 
 /* ─── EDUCATION & CERTS ─── */
