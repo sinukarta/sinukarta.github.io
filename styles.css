@@ -554,10 +554,9 @@ button {
 }
 
 .scroll-indicator {
-  position: absolute;
-  bottom: var(--space-12);
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin: var(--space-16) auto 0;
+  padding-bottom: var(--space-8);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1230,11 +1229,11 @@ button {
 
 @media (max-width: 768px) {
   .hero-content {
-    padding-bottom: var(--space-12); /* Give room for scroll indicator */
+    padding-bottom: 0; 
   }
 
   .scroll-indicator {
-    display: none; /* Hide scroll loop on mobile to prevent overlaps */
+    margin-top: var(--space-10);
   }
 
   .about-grid {
