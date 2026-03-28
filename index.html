@@ -1,1 +1,708 @@
-Welcome to sinukarta Github
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dyan Raditya Sinukarta — Technology Consultant & AI Architect</title>
+  <meta name="description" content="Technology Consultant & Digital Transformation Leader specializing in AI, IoT, Computer Vision, and Cloud Architecture. 20+ years building intelligent enterprise solutions.">
+  <meta name="keywords" content="technology consultant, AI architect, IoT, computer vision, digital transformation, Yogyakarta, Indonesia, Dyan Raditya Sinukarta">
+  <meta name="author" content="Dyan Raditya Sinukarta">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Dyan Raditya Sinukarta — Technology Consultant & AI Architect">
+  <meta property="og:description" content="Building intelligent systems at scale. AI, IoT, Computer Vision, Cloud Architecture. 20+ years of experience.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sinukarta.github.io">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dyan Raditya Sinukarta — Technology Consultant & AI Architect">
+  <meta name="twitter:description" content="Building intelligent systems at scale. AI, IoT, Computer Vision, Cloud Architecture.">
+
+  <link rel="canonical" href="https://sinukarta.github.io">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-content">
+      <div class="loader-name">SINUKARTA</div>
+      <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Particle Background -->
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HERO SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="hero section" id="home">
+    <div class="hero-content">
+      <div class="hero-status">
+        <span class="status-dot"></span>
+        Available for collaboration
+      </div>
+
+      <h1 class="hero-name">
+        Dyan Raditya<br>
+        <span class="accent">Sinukarta</span>
+      </h1>
+
+      <p class="hero-title">
+        Technology Consultant & Digital Transformation Leader<br>
+        <strong style="color: var(--text-primary);">AI · IoT · Computer Vision · Cloud Architecture</strong>
+      </p>
+
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Yogyakarta, Indonesia
+        </div>
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="live-time">--:--:-- WIB</span>
+        </div>
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Branch Manager @ AsiaQuest Indonesia
+        </div>
+      </div>
+
+      <div class="hero-socials">
+        <a href="https://www.linkedin.com/in/sinukarta/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile" id="social-linkedin">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/sinukarta" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile" id="social-github">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a href="mailto:sinukarta@gmail.com" class="social-link" aria-label="Send Email" id="social-email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+        <a href="https://www.sinukarta.me/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Personal Website" id="social-website">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ABOUT SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">01 — About</span>
+        <h2 class="section-title">Building Intelligent<br>Systems at Scale</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text reveal stagger-1">
+          <p>I am a Technology Consultant and Digital Transformation Specialist with deep expertise in AI, IoT, Computer Vision, and Cloud-based enterprise solutions. Currently serving as Branch Manager at AsiaQuest Indonesia, I lead the development and implementation of intelligent technology solutions for enterprises, government institutions, and large-scale operations.</p>
+          <p>My experience spans over two decades of helping organizations improve operational efficiency, enhance customer experience, and enable data-driven decision-making through modern technology. From building AI decision engines to deploying real-time computer vision surveillance systems — I architect solutions that work at production scale.</p>
+          <p>My professional mission: help organizations transition into <strong style="color: var(--text-primary);">intelligent, efficient, and scalable digital operations</strong>.</p>
+        </div>
+
+        <div class="expertise-grid reveal stagger-2">
+          <div class="expertise-card">
+            <div class="expertise-icon">🤖</div>
+            <h4>Artificial Intelligence & LLMs</h4>
+            <p>Multi-model AI systems, decision engines, GPT/Claude/Gemini integration</p>
+          </div>
+          <div class="expertise-card">
+            <div class="expertise-icon">👁️</div>
+            <h4>Computer Vision</h4>
+            <p>Real-time detection, CCTV analytics, video stream processing with OpenCV & YOLO</p>
+          </div>
+          <div class="expertise-card">
+            <div class="expertise-icon">🌐</div>
+            <h4>IoT & Smart Infrastructure</h4>
+            <p>Smart home systems, sensor networks, intelligent transport solutions</p>
+          </div>
+          <div class="expertise-card">
+            <div class="expertise-icon">☁️</div>
+            <h4>Cloud & Enterprise Systems</h4>
+            <p>Scalable architectures, ERP platforms, API orchestration, microservices</p>
+          </div>
+          <div class="expertise-card">
+            <div class="expertise-icon">📊</div>
+            <h4>Digital Transformation Strategy</h4>
+            <p>End-to-end DX consulting, data pipelines, operational optimization</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Strip -->
+      <div class="metrics-strip reveal">
+        <div class="metric-item">
+          <div class="metric-number"><span data-count="20" data-suffix="+">0</span><span class="accent">+</span></div>
+          <div class="metric-label">Years Experience</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number"><span data-count="50" data-suffix="+">0</span><span class="accent">+</span></div>
+          <div class="metric-label">Projects Delivered</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number"><span data-count="10" data-suffix="+">0</span><span class="accent">+</span></div>
+          <div class="metric-label">Industries Served</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number"><span data-count="3" data-suffix="">0</span></div>
+          <div class="metric-label">Countries</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       EXPERIENCE SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">02 — Experience</span>
+        <h2 class="section-title">Two Decades of<br>Technology Leadership</h2>
+        <p class="section-subtitle">From enterprise consulting to government digital transformation — a career built on delivering scalable, intelligent systems.</p>
+      </div>
+
+      <div class="timeline">
+        <!-- AsiaQuest -->
+        <div class="timeline-item reveal stagger-1">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">Oct 2016 — Present · 9+ years</div>
+          <div class="timeline-role">Branch Manager</div>
+          <div class="timeline-company">AsiaQuest Indonesia (PT. AQ Business Consulting Indonesia)</div>
+          <div class="timeline-location">📍 Yogyakarta, Indonesia</div>
+          <div class="timeline-description">Leading technology consulting and digital transformation initiatives. Designing and implementing AI, IoT, and cloud-based enterprise solutions. Delivering intelligent systems including computer vision analytics, smart infrastructure, and enterprise platforms for government and enterprise clients.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">AI</span>
+            <span class="timeline-tag">IoT</span>
+            <span class="timeline-tag">Computer Vision</span>
+            <span class="timeline-tag">Leadership</span>
+            <span class="timeline-tag">Cloud Architecture</span>
+          </div>
+        </div>
+
+        <!-- Universitas AMIKOM -->
+        <div class="timeline-item reveal stagger-2">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">Sep 2022 — Jul 2025 · 3 years</div>
+          <div class="timeline-role">Consulting Program Manager</div>
+          <div class="timeline-company">Universitas AMIKOM Yogyakarta</div>
+          <div class="timeline-location">📍 Yogyakarta, Indonesia</div>
+          <div class="timeline-description">Identified and solved core problems across IT, Marketing, and Management sectors. Created 1, 2, and 5-year implementation strategies. Built "Amikom Care" CRM platform, designed university-wide marketing strategy, and connected the university with major business entities for long-term cooperation.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Strategy</span>
+            <span class="timeline-tag">CRM</span>
+            <span class="timeline-tag">Marketing</span>
+            <span class="timeline-tag">Consulting</span>
+          </div>
+        </div>
+
+        <!-- BKKBN -->
+        <div class="timeline-item reveal stagger-3">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">Apr 2010 — Jan 2022 · 12 years</div>
+          <div class="timeline-role">IT Consultant & Data Analyst</div>
+          <div class="timeline-company">BKKBN — National Population and Family Planning Board</div>
+          <div class="timeline-location">📍 Yogyakarta Province, Indonesia</div>
+          <div class="timeline-description">Application development, data analysis, and IT consulting for national population management systems. Built demographic mapping systems and family planning program analytics platforms used across the province.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Data Analytics</span>
+            <span class="timeline-tag">Government</span>
+            <span class="timeline-tag">GIS</span>
+            <span class="timeline-tag">MIS</span>
+          </div>
+        </div>
+
+        <!-- Kementerian Setneg -->
+        <div class="timeline-item reveal stagger-4">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">2014 — 2015 · 1 year</div>
+          <div class="timeline-role">IT Consultant & System Analyst</div>
+          <div class="timeline-company">Kementerian Sekretariat Negara RI</div>
+          <div class="timeline-location">📍 Indonesia</div>
+          <div class="timeline-description">Special Representative Office of The President Republic of Indonesia for the Millennium Development Goals (MDGs). Generated maps and graphs for investment distribution and MDGs program tracking across Indonesia.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">MDGs</span>
+            <span class="timeline-tag">GIS Mapping</span>
+            <span class="timeline-tag">Government</span>
+          </div>
+        </div>
+
+        <!-- ADB -->
+        <div class="timeline-item reveal stagger-5">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">Oct 2012 — Oct 2013 · 1 year</div>
+          <div class="timeline-role">IT Consultant (DHS-2 CPIU)</div>
+          <div class="timeline-company">Asian Development Bank</div>
+          <div class="timeline-location">📍 Indonesia (9 Provinces)</div>
+          <div class="timeline-description">Supported decentralized health and family planning service delivery project covering 9 provinces and 90 districts/cities. Consolidated project final reports and managed the Management Information System for health service assessment.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">ADB</span>
+            <span class="timeline-tag">Health IT</span>
+            <span class="timeline-tag">MIS</span>
+          </div>
+        </div>
+
+        <!-- AD!JAVA -->
+        <div class="timeline-item reveal stagger-6">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">May 2003 — Present · 22+ years</div>
+          <div class="timeline-role">CEO & Founder</div>
+          <div class="timeline-company">AD!JAVA Partnership</div>
+          <div class="timeline-location">📍 Yogyakarta, Indonesia</div>
+          <div class="timeline-description">Founded and lead a technology partnership firm providing innovative solutions and consulting services. Focused on win-win cooperation with partners, delivering information solutions and business optimization across multiple industries.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Entrepreneurship</span>
+            <span class="timeline-tag">Consulting</span>
+            <span class="timeline-tag">Business Development</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PROJECTS SECTION (Bento Grid)
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">03 — Selected Work</span>
+        <h2 class="section-title">Real-World Systems<br>Built for Scale</h2>
+        <p class="section-subtitle">Enterprise-grade solutions that solve complex problems. Every system designed for production, not prototypes.</p>
+      </div>
+
+      <div class="projects-grid">
+        <!-- AI Decision Engine — Featured -->
+        <div class="project-card featured reveal stagger-1">
+          <div class="project-emoji">🤖</div>
+          <div class="project-label">AI / LLM System</div>
+          <div class="project-name">Multi-Model AI Decision Engine</div>
+          <div class="project-desc">Enterprise decision support system integrating multiple LLM providers (GPT, Claude, Gemini). Implemented intelligent routing logic, response optimization, and fallback architecture for mission-critical business decisions.</div>
+          <div class="project-result">↗ Increased decision accuracy · Reduced single-model dependency · Improved system resilience</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">GPT-4</span>
+            <span class="project-tech-tag">Claude</span>
+            <span class="project-tech-tag">Gemini</span>
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">API Orchestration</span>
+          </div>
+        </div>
+
+        <!-- Computer Vision -->
+        <div class="project-card reveal stagger-2">
+          <div class="project-emoji">👁️</div>
+          <div class="project-label">Computer Vision</div>
+          <div class="project-name">CV Surveillance System</div>
+          <div class="project-desc">Real-time object detection & tracking integrated with CCTV infrastructure. Built alert and anomaly detection pipeline for automated monitoring.</div>
+          <div class="project-result">↗ Automated monitoring · Faster incident detection</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">OpenCV</span>
+            <span class="project-tech-tag">YOLO</span>
+            <span class="project-tech-tag">Python</span>
+          </div>
+        </div>
+
+        <!-- Enterprise Data Platform -->
+        <div class="project-card reveal stagger-3">
+          <div class="project-emoji">📊</div>
+          <div class="project-label">Data Platform</div>
+          <div class="project-name">Enterprise Data Intelligence</div>
+          <div class="project-desc">Centralized data pipeline integrating multiple business systems with real-time dashboards and analytics for strategic decision-making.</div>
+          <div class="project-result">↗ Eliminated data silos · Real-time insights</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">PostgreSQL</span>
+            <span class="project-tech-tag">Analytics</span>
+            <span class="project-tech-tag">Pipeline</span>
+          </div>
+        </div>
+
+        <!-- Automation -->
+        <div class="project-card reveal stagger-4">
+          <div class="project-emoji">⚙️</div>
+          <div class="project-label">Automation</div>
+          <div class="project-name">Cross-Dept Automation Engine</div>
+          <div class="project-desc">Event-driven workflow automation integrating CRM, internal tools, and AI services. Multi-trigger orchestration across departments.</div>
+          <div class="project-result">↗ Reduced manual workload · Operational consistency</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">Node.js</span>
+            <span class="project-tech-tag">REST API</span>
+            <span class="project-tech-tag">Workflows</span>
+          </div>
+        </div>
+
+        <!-- System Integration — Featured -->
+        <div class="project-card featured reveal stagger-5">
+          <div class="project-emoji">🔗</div>
+          <div class="project-label">System Architecture</div>
+          <div class="project-name">Distributed System Integration Layer</div>
+          <div class="project-desc">Modular API-based architecture connecting multiple platforms and services. Built scalable orchestration ensuring flexibility for new service integrations and long-term maintainability. Supports CRM, internal tools, and external AI services.</div>
+          <div class="project-result">↗ Flexible expansion · Easier integrations · Long-term scalability</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">Microservices</span>
+            <span class="project-tech-tag">API Gateway</span>
+            <span class="project-tech-tag">Docker</span>
+            <span class="project-tech-tag">Cloud</span>
+          </div>
+        </div>
+
+        <!-- GOJJA -->
+        <div class="project-card reveal stagger-6">
+          <div class="project-emoji">🏖️</div>
+          <div class="project-label">AI / Travel</div>
+          <div class="project-name">GOJJA Travel SuperApp</div>
+          <div class="project-desc">AI-powered travel marketplace with intelligent itinerary planning, cultural companion engine, and unified booking architecture.</div>
+          <div class="project-result">↗ AI-driven recommendations · Marketplace integration</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">React</span>
+            <span class="project-tech-tag">Node.js</span>
+            <span class="project-tech-tag">AI</span>
+            <span class="project-tech-tag">Flutter</span>
+          </div>
+        </div>
+
+        <!-- VisionAI -->
+        <div class="project-card reveal stagger-1">
+          <div class="project-emoji">🎯</div>
+          <div class="project-label">AI / IoT</div>
+          <div class="project-name">VisionAI™ Dashboard</div>
+          <div class="project-desc">Complex dashboard and backend for Computer Vision collaboration with IoT integration. Microservice architecture with module runner system.</div>
+          <div class="project-result">↗ Real-time CV analytics · Scalable infrastructure</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">OpenCV</span>
+            <span class="project-tech-tag">IoT</span>
+          </div>
+        </div>
+
+        <!-- Nara SmartHome -->
+        <div class="project-card reveal stagger-2">
+          <div class="project-emoji">🎚️</div>
+          <div class="project-label">IoT</div>
+          <div class="project-name">Nara SmartHome™</div>
+          <div class="project-desc">Intelligent smart home technology platform with automated device control, sensor integration, and remote management capabilities.</div>
+          <div class="project-result">↗ Home automation · IoT ecosystem</div>
+          <div class="project-tech-tags">
+            <span class="project-tech-tag">IoT</span>
+            <span class="project-tech-tag">Sensors</span>
+            <span class="project-tech-tag">Cloud</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TECH STACK SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section" id="stack">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">04 — Tech Stack</span>
+        <h2 class="section-title">Tools & Technologies</h2>
+        <p class="section-subtitle">A curated selection of technologies I use to build complex, scalable systems.</p>
+      </div>
+
+      <div class="tech-categories">
+        <div class="tech-category reveal stagger-1">
+          <div class="tech-category-icon">💻</div>
+          <div class="tech-category-title">Core Development</div>
+          <div class="tech-list">
+            <span class="tech-item">JavaScript</span>
+            <span class="tech-item">Node.js</span>
+            <span class="tech-item">React</span>
+            <span class="tech-item">PHP</span>
+            <span class="tech-item">Python</span>
+            <span class="tech-item">Laravel</span>
+            <span class="tech-item">Next.js</span>
+            <span class="tech-item">REST APIs</span>
+          </div>
+        </div>
+
+        <div class="tech-category reveal stagger-2">
+          <div class="tech-category-icon">🧠</div>
+          <div class="tech-category-title">AI / LLM Ecosystem</div>
+          <div class="tech-list">
+            <span class="tech-item">OpenAI / GPT-4</span>
+            <span class="tech-item">Claude</span>
+            <span class="tech-item">Gemini</span>
+            <span class="tech-item">Perplexity</span>
+            <span class="tech-item">Grok</span>
+            <span class="tech-item">BytePlus</span>
+            <span class="tech-item">LangChain</span>
+          </div>
+        </div>
+
+        <div class="tech-category reveal stagger-3">
+          <div class="tech-category-icon">👁️</div>
+          <div class="tech-category-title">Computer Vision</div>
+          <div class="tech-list">
+            <span class="tech-item">OpenCV</span>
+            <span class="tech-item">YOLO</span>
+            <span class="tech-item">Image Processing</span>
+            <span class="tech-item">Video Streams</span>
+            <span class="tech-item">Object Detection</span>
+          </div>
+        </div>
+
+        <div class="tech-category reveal stagger-4">
+          <div class="tech-category-icon">🗄️</div>
+          <div class="tech-category-title">Data & Infrastructure</div>
+          <div class="tech-list">
+            <span class="tech-item">PostgreSQL</span>
+            <span class="tech-item">MySQL</span>
+            <span class="tech-item">Data Pipelines</span>
+            <span class="tech-item">Analytics</span>
+            <span class="tech-item">Docker</span>
+            <span class="tech-item">Cloud Deploy</span>
+          </div>
+        </div>
+
+        <div class="tech-category reveal stagger-5">
+          <div class="tech-category-icon">⚙️</div>
+          <div class="tech-category-title">Automation & Integration</div>
+          <div class="tech-list">
+            <span class="tech-item">Workflow Automation</span>
+            <span class="tech-item">API Orchestration</span>
+            <span class="tech-item">Distributed Systems</span>
+            <span class="tech-item">Microservices</span>
+            <span class="tech-item">CI/CD</span>
+          </div>
+        </div>
+
+        <div class="tech-category reveal stagger-6">
+          <div class="tech-category-icon">📱</div>
+          <div class="tech-category-title">Mobile & Frontend</div>
+          <div class="tech-list">
+            <span class="tech-item">Flutter</span>
+            <span class="tech-item">React Native</span>
+            <span class="tech-item">HTML/CSS</span>
+            <span class="tech-item">Responsive Design</span>
+            <span class="tech-item">PWA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SPEAKING & MEDIA SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section" id="speaking">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">05 — Media & Speaking</span>
+        <h2 class="section-title">Sharing Knowledge<br>Beyond Code</h2>
+        <p class="section-subtitle">Featured as technology expert in international collaborations, TV appearances, and startup communities.</p>
+      </div>
+
+      <div class="speaking-grid">
+        <div class="speaking-card reveal stagger-1">
+          <div class="speaking-emoji">🎓</div>
+          <div class="speaking-title">International Tech Sharing</div>
+          <div class="speaking-desc">UGM x Singapore Polytechnic — Sharing insights on technology, innovation, and real-world implementation with international academic collaboration. Bridging theory to practical system building.</div>
+          <a href="https://www.youtube.com/watch?v=KjdF0iU3vKw&list=PL0OT1CxCqrPBY37AFrpDnriJm2u4tLbfb" target="_blank" rel="noopener noreferrer" class="speaking-link" id="link-speaking-ugm">
+            Watch on YouTube
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+
+        <div class="speaking-card reveal stagger-2">
+          <div class="speaking-emoji">📺</div>
+          <div class="speaking-title">TV Appearance — Kompas TV / RBTV</div>
+          <div class="speaking-desc">Featured as technology expert & speaker, discussing real-world tech trends, system implementation, and digital transformation. Positioned as practitioner with hands-on experience.</div>
+          <a href="https://www.youtube.com/watch?v=yyWjo2YHX64&list=PL0OT1CxCqrPBY37AFrpDnriJm2u4tLbfb&index=2" target="_blank" rel="noopener noreferrer" class="speaking-link" id="link-speaking-tv">
+            Watch on YouTube
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+
+        <div class="speaking-card reveal stagger-3">
+          <div class="speaking-emoji">🚀</div>
+          <div class="speaking-title">Startup Community Speaker</div>
+          <div class="speaking-desc">Mentoring and guiding startup founders on building scalable systems, leveraging technology for growth, and practical implementation strategies for real-world challenges.</div>
+          <a href="https://www.youtube.com/watch?v=CVLtLgFaJS4&list=PL0OT1CxCqrPBY37AFrpDnriJm2u4tLbfb&index=3" target="_blank" rel="noopener noreferrer" class="speaking-link" id="link-speaking-startup">
+            Watch on YouTube
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       EDUCATION & CERTIFICATIONS
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section" id="education">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">06 — Education & Certs</span>
+        <h2 class="section-title">Academic Foundation<br>& Certifications</h2>
+      </div>
+
+      <div class="edu-grid">
+        <!-- Education Column -->
+        <div class="edu-column reveal stagger-1">
+          <h3>🎓 Education</h3>
+
+          <div class="edu-item">
+            <h4>Bachelor's Degree — Management Information Systems</h4>
+            <div class="edu-school">Universitas AMIKOM Yogyakarta</div>
+            <div class="edu-period">2007 — 2010</div>
+            <div class="edu-notes">Graduated with <strong>Cumlaude</strong> — GPA 3.76 / 4.00</div>
+          </div>
+
+          <div class="edu-item">
+            <h4>Communication Science (Non-graduate)</h4>
+            <div class="edu-school">Universitas Pembangunan Nasional Veteran Yogyakarta</div>
+            <div class="edu-period">1997 — 2003</div>
+            <div class="edu-notes">Communication Student Association (HIMAKOM) member</div>
+          </div>
+
+          <div class="edu-item">
+            <h4>High School — IPS</h4>
+            <div class="edu-school">SMA Pangudi Luhur</div>
+            <div class="edu-period">1995 — 1997</div>
+            <div class="edu-notes">OSIS Members · Purna Paskibraka Indonesia</div>
+          </div>
+        </div>
+
+        <!-- Certifications Column -->
+        <div class="edu-column reveal stagger-2">
+          <h3>📜 Certifications</h3>
+
+          <div class="cert-item">
+            <span class="cert-icon">🟢</span>
+            <div class="cert-info">
+              <h4>Introduction to Large Language Models</h4>
+              <span>Google · Feb 2026</span>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <span class="cert-icon">🟢</span>
+            <div class="cert-info">
+              <h4>Responsible AI: Applying AI Principles</h4>
+              <span>Google Cloud · Feb 2026</span>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <span class="cert-icon">🔵</span>
+            <div class="cert-info">
+              <h4>Foundations of Generative AI for Business Leaders</h4>
+              <span>Microsoft · Feb 2026</span>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <span class="cert-icon">🟢</span>
+            <div class="cert-info">
+              <h4>Gemini Certified Educator</h4>
+              <span>Google · Sep 2025 — Sep 2028</span>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <span class="cert-icon">🟢</span>
+            <div class="cert-info">
+              <h4>Google Analytics Individual Qualification</h4>
+              <span>Google</span>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <span class="cert-icon">🟠</span>
+            <div class="cert-info">
+              <h4>Marketing Analytics</h4>
+              <span>TestDome · Mar 2021</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CONTACT / CTA SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="contact-heading">Let's Build Something<br><span style="color: var(--accent);">Intelligent</span></h2>
+        <p class="contact-subtitle">I work with companies building complex, scalable, and intelligent systems. Available for system architecture, AI implementation, computer vision, and automation consulting.</p>
+      </div>
+
+      <div class="contact-links reveal stagger-1">
+        <a href="mailto:sinukarta@gmail.com" class="contact-btn primary" id="cta-email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Get in Touch
+        </a>
+        <a href="https://www.linkedin.com/in/sinukarta/" target="_blank" rel="noopener noreferrer" class="contact-btn secondary" id="cta-linkedin">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/sinukarta" target="_blank" rel="noopener noreferrer" class="contact-btn secondary" id="cta-github">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+
+      <!-- Marquee -->
+      <div class="marquee-wrap reveal">
+        <div class="marquee-track">
+          <span class="marquee-text">Let's work together <span class="dot">✦</span> System Architecture <span class="dot">✦</span> AI Implementation <span class="dot">✦</span> Computer Vision <span class="dot">✦</span> Digital Transformation <span class="dot">✦</span> Let's work together <span class="dot">✦</span> System Architecture <span class="dot">✦</span> AI Implementation <span class="dot">✦</span> Computer Vision <span class="dot">✦</span> Digital Transformation <span class="dot">✦</span></span>
+          <span class="marquee-text">Let's work together <span class="dot">✦</span> System Architecture <span class="dot">✦</span> AI Implementation <span class="dot">✦</span> Computer Vision <span class="dot">✦</span> Digital Transformation <span class="dot">✦</span> Let's work together <span class="dot">✦</span> System Architecture <span class="dot">✦</span> AI Implementation <span class="dot">✦</span> Computer Vision <span class="dot">✦</span> Digital Transformation <span class="dot">✦</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">
+        © 2026 Dyan Raditya Sinukarta. Designed & built with <span class="accent">precision</span>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FLOATING NAVIGATION
+       ═══════════════════════════════════════════════════════════ -->
+  <nav class="floating-nav" aria-label="Main Navigation" id="main-nav">
+    <a href="#home" class="nav-link active">Home</a>
+    <span class="nav-divider"></span>
+    <a href="#about" class="nav-link">About</a>
+    <span class="nav-divider"></span>
+    <a href="#experience" class="nav-link">Experience</a>
+    <span class="nav-divider"></span>
+    <a href="#projects" class="nav-link">Projects</a>
+    <span class="nav-divider"></span>
+    <a href="#stack" class="nav-link">Stack</a>
+    <span class="nav-divider"></span>
+    <a href="#contact" class="nav-link">Contact</a>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>
