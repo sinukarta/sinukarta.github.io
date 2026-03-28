@@ -410,6 +410,7 @@ button {
 .hero-avatar img {
   width: 140px;
   height: 140px;
+  margin: 0 auto;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid rgba(var(--accent-rgb), 0.4);
