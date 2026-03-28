@@ -388,17 +388,19 @@ button {
 .hero {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   position: relative;
   z-index: var(--z-content);
   overflow: hidden;
+  padding-bottom: 0 !important;
 }
 
 .hero-content {
   text-align: center;
   max-width: 900px;
-  padding: var(--space-8);
+  margin: auto 0;
+  padding: 0 var(--space-8);
 }
 
 .hero-avatar {
@@ -555,8 +557,7 @@ button {
 
 .scroll-indicator {
   position: relative;
-  margin: var(--space-16) auto 0;
-  padding-bottom: var(--space-8);
+  margin-bottom: var(--space-12);
   display: flex;
   flex-direction: column;
   align-items: center;
