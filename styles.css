@@ -600,8 +600,8 @@ button {
 /* ─── ABOUT SECTION ─── */
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-16);
+  grid-template-columns: 340px 1fr;
+  gap: var(--space-12);
   align-items: start;
   margin-top: var(--space-12);
 }
@@ -651,8 +651,9 @@ button {
 /* Expertise Cards */
 .expertise-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-4);
+  margin-top: var(--space-10);
 }
 
 .expertise-card {
@@ -1036,24 +1037,26 @@ button {
 
 /* ─── ABOUT PORTRAIT ─── */
 .about-portrait {
-  margin-bottom: var(--space-8);
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid var(--border);
-  position: relative;
+  position: sticky;
+  top: 120px;
 }
 
 .about-portrait img {
   width: 100%;
-  height: 400px;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: center top;
   display: block;
-  transition: transform var(--duration-slow) var(--ease-out-expo);
+  filter: grayscale(0.15) contrast(1.05);
+  transition: all var(--duration-slow) var(--ease-out-expo);
 }
 
 .about-portrait:hover img {
   transform: scale(1.03);
+  filter: grayscale(0) contrast(1);
 }
 
 .about-text p:first-of-type::first-letter {
@@ -1225,6 +1228,19 @@ button {
 }
 
 @media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-portrait {
+    position: relative;
+    top: 0;
+  }
+
+  .about-portrait img {
+    aspect-ratio: 4 / 3;
+  }
+
   .beyond-grid {
     grid-template-columns: 1fr;
     gap: var(--space-8);
@@ -1242,9 +1258,129 @@ button {
     height: 280px;
   }
 
-  .about-portrait img {
-    height: 300px;
+  .testimonials-grid {
+    grid-template-columns: 1fr;
   }
+}
+
+/* ─── TESTIMONIALS / RECOMMENDATIONS ─── */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+}
+
+.testimonial-card {
+  padding: var(--space-8);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out-expo);
+}
+
+.testimonial-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2),
+              0 0 40px rgba(var(--accent-rgb), 0.03);
+}
+
+.testimonial-quote {
+  font-size: 5rem;
+  font-weight: 900;
+  color: rgba(var(--accent-rgb), 0.15);
+  line-height: 1;
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-6);
+  font-family: Georgia, serif;
+  pointer-events: none;
+}
+
+.testimonial-text {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--space-6);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-text strong {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-subtle);
+  border: 1px solid var(--border-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.testimonial-name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.testimonial-role {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.testimonial-cta {
+  text-align: center;
+  margin-top: var(--space-10);
+}
+
+.testimonial-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-8);
+  background: var(--accent-subtle);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent);
+  transition: all var(--duration-fast) var(--ease-out-expo);
+}
+
+.testimonial-link:hover {
+  background: rgba(var(--accent-rgb), 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.15);
+}
+
+.testimonial-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 /* ─── EDUCATION & CERTS ─── */
