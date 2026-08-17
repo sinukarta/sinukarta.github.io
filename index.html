@@ -205,6 +205,40 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 .hero__sub strong{ color:var(--text); font-weight:500; }
 .hero__tagline{ margin-top:28px; font-family:var(--mono); font-size:12px; letter-spacing:.14em; color:var(--text-faint); text-transform:uppercase; }
 
+/* Hero right-side orbit graphic — fills the empty space beside "DYAN" on wide screens */
+.hero-orbit{
+  position:absolute; top:50%; right:-2vw; transform:translateY(-50%);
+  width:clamp(340px, 34vw, 540px); aspect-ratio:1/1; pointer-events:none;
+  opacity:0; animation:ho-fade-in 1.4s .5s ease-out forwards;
+  display:none;
+}
+@keyframes ho-fade-in{ to{ opacity:1; } }
+.hero-orbit svg{ width:100%; height:100%; overflow:visible; }
+.ho-ring{ fill:none; stroke:var(--line-strong); stroke-width:1; }
+.ho-ring--2{ stroke-dasharray:2 10; }
+.ho-ring--3{ stroke:var(--line); }
+.ho-spin{ transform-origin:230px 230px; transform-box:view-box; animation:ho-rotate linear infinite; }
+.ho-spin--a{ animation-duration:38s; }
+.ho-spin--b{ animation-duration:22s; }
+.ho-spin--c{ animation-duration:31s; animation-direction:reverse; }
+.ho-spin--d{ animation-duration:46s; animation-direction:reverse; }
+.ho-spin--e{ animation-duration:17s; }
+@keyframes ho-rotate{ to{ transform:rotate(360deg); } }
+.ho-tick{ stroke:var(--cyan-dim); stroke-width:1.5; }
+.ho-node{ filter:drop-shadow(0 0 6px currentColor); }
+.ho-node--cyan{ fill:var(--cyan); color:var(--cyan); }
+.ho-node--violet{ fill:var(--violet); color:var(--violet); }
+.ho-node--blue{ fill:var(--blue); color:var(--blue); }
+.ho-core{ fill:var(--cyan); filter:drop-shadow(0 0 18px var(--cyan)); animation:ho-pulse 2.6s ease-in-out infinite; transform-origin:230px 230px; transform-box:view-box; }
+.ho-core-ring{ fill:none; stroke:var(--cyan-dim); stroke-width:1; animation:ho-ring-pulse 2.6s ease-in-out infinite; transform-origin:230px 230px; transform-box:view-box; }
+@keyframes ho-pulse{ 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(0.82); opacity:.75; } }
+@keyframes ho-ring-pulse{ 0%{ transform:scale(0.9); opacity:.9; } 100%{ transform:scale(1.7); opacity:0; } }
+@media (min-width:1100px){ .hero-orbit{ display:block; } }
+@media (prefers-reduced-motion: reduce){
+  .hero-orbit{ animation:none; opacity:1; }
+  .ho-spin, .ho-core, .ho-core-ring{ animation:none; }
+}
+
 .scroll-cue{
   position:absolute; bottom:48px; left:50%; transform:translateX(-50%);
   display:flex; flex-direction:column; align-items:center; gap:10px;
@@ -228,20 +262,46 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 /* =========================================================
    6. THINK
 ========================================================= */
+#scene-think{ overflow:hidden; }
 #scene-think .think-quote{
   font-size:clamp(30px, 5.2vw, 62px); line-height:1.18; letter-spacing:-0.01em; max-width:920px;
 }
 #scene-think .think-quote .dim{ color:var(--text-faint); }
+.think-glow{
+  position:absolute; top:50%; left:50%; width:900px; height:900px; z-index:-1;
+  transform:translate(-50%,-50%); border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(94,234,212,0.16), transparent 62%);
+  filter:blur(10px); transition:background 0.6s ease; opacity:.8;
+}
 .flow{
   margin-top:64px; display:flex; flex-wrap:wrap; align-items:center; gap:14px;
   font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
 }
 .flow__step{
   padding:10px 18px; border:1px solid var(--line-strong); border-radius:100px; color:var(--text-dim);
-  opacity:0; transform:translateY(10px);
+  opacity:0; transform:translateY(10px); background:transparent; cursor:pointer;
+  transition:border-color .3s var(--ease), color .3s var(--ease), background .3s var(--ease), transform .2s var(--ease);
+  font-family:inherit; font-size:inherit; letter-spacing:inherit; text-transform:inherit;
 }
-.flow__step.is-key{ color:var(--cyan); border-color:var(--cyan-dim); }
+.flow__step:hover{ color:var(--text); border-color:var(--cyan-dim); }
+.flow__step.is-key, .flow__step.is-active{ color:var(--cyan); border-color:var(--cyan-dim); background:rgba(94,234,212,0.07); }
+.flow__step.is-active{ box-shadow:0 0 0 1px var(--cyan-dim), 0 0 22px -4px var(--cyan); transform:translateY(-2px); }
 .flow__arrow{ color:var(--text-faint); opacity:0; }
+
+.flow-detail{
+  margin-top:30px; max-width:640px; display:flex; gap:22px; align-items:flex-start;
+  padding:22px 26px; border:1px solid var(--line); border-radius:12px;
+  background:rgba(255,255,255,0.02); opacity:0; transform:translateY(8px);
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+.flow-detail.is-visible{ opacity:1; transform:translateY(0); }
+.flow-detail__index{ font-size:11px; color:var(--text-faint); flex-shrink:0; padding-top:3px; }
+.flow-detail__label{ font-family:var(--display); font-size:19px; color:var(--cyan); margin-bottom:8px; transition:color .3s; }
+.flow-detail p{ font-size:14px; color:var(--text-dim); line-height:1.65; }
+@media (max-width:480px){
+  .flow-detail{ padding:18px 18px; gap:6px; }
+  .flow-detail__index{ padding-top:0; }
+}
 
 /* =========================================================
    7. INTELLIGENCE
@@ -266,15 +326,29 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 .pipeline__step{
   flex:1 1 150px; min-width:150px; padding:22px 18px; border:1px solid var(--line);
   border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
-  opacity:0; transform:translateY(24px); position:relative; overflow:hidden;
+  opacity:0; transform:translateY(24px); position:relative; overflow:hidden; cursor:pointer;
+  transition:border-color .3s var(--ease), background .3s var(--ease), transform .25s var(--ease), box-shadow .3s var(--ease);
 }
 .pipeline__step::before{
   counter-increment:step; content:counter(step,decimal-leading-zero);
   font-family:var(--mono); font-size:11px; color:var(--text-faint); display:block; margin-bottom:14px;
+  transition:color .3s var(--ease);
 }
 .pipeline__step h4{ font-size:16px; font-weight:500; margin-bottom:8px; }
 .pipeline__step p{ font-size:13px; color:var(--text-dim); line-height:1.5; }
 .pipeline__step:hover{ border-color:var(--cyan-dim); }
+.pipeline__step.is-passed::before{ color:var(--cyan); }
+.pipeline__step.is-passed{ border-color:var(--line-strong); background:linear-gradient(180deg, rgba(94,234,212,.05), transparent); }
+.pipeline__step.is-active{
+  border-color:var(--cyan); background:rgba(94,234,212,0.08);
+  transform:translateY(-4px); box-shadow:0 14px 34px -12px rgba(94,234,212,.4);
+}
+.pipeline__step.is-active::before{ color:var(--cyan); }
+.pipeline-status{
+  margin-top:24px; font-size:12px; color:var(--text-faint); letter-spacing:.04em;
+  transition:color .3s; min-height:18px;
+}
+.pipeline-status.is-active{ color:var(--cyan); }
 
 /* =========================================================
    9. COMPUTER VISION
@@ -301,7 +375,7 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
    10. DIGITAL TWIN
 ========================================================= */
 #scene-twin{ min-height:220vh; padding:0; align-items:stretch; }
-.twin-stage{ position:sticky; top:0; height:100vh; display:flex; align-items:flex-end; overflow:hidden; }
+.twin-stage{ position:sticky; top:0; height:100vh; display:flex; align-items:flex-end; overflow:hidden; pointer-events:none; }
 .twin-hud{ position:relative; z-index:4; width:100%; padding:110px 8vw 44px; display:flex; flex-direction:column; gap:28px; pointer-events:none; }
 .twin-hud > *{ pointer-events:auto; }
 .twin-modes{ display:flex; gap:10px; flex-wrap:wrap; }
@@ -350,7 +424,7 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
    12. SYSTEM ATLAS
 ========================================================= */
 #scene-atlas{ min-height:240vh; padding:0; align-items:stretch; }
-.atlas-stage{ position:sticky; top:0; height:100vh; overflow:hidden; }
+.atlas-stage{ position:sticky; top:0; height:100vh; overflow:hidden; pointer-events:none; }
 .atlas-hud{ position:absolute; inset:0; z-index:4; pointer-events:none; padding:110px 8vw 40px; display:flex; flex-direction:column; justify-content:space-between; }
 .atlas-hud > *{ pointer-events:auto; }
 .atlas-note{ margin-top:14px; font-size:12px; color:var(--text-faint); max-width:420px; line-height:1.6; }
@@ -360,7 +434,8 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 .atlas-tooltip{
   position:absolute; transform:translate(-50%,-130%); pointer-events:none;
   font-family:var(--mono); font-size:11px; color:var(--text); background:rgba(8,10,14,.85);
-  border:1px solid var(--cyan-dim); padding:6px 12px; border-radius:5px; opacity:0; transition:opacity .2s; white-space:nowrap;
+  border:1px solid var(--cyan-dim); padding:6px 12px; border-radius:5px; opacity:0; transition:opacity .2s;
+  max-width:min(260px, 82vw); white-space:normal; text-align:center; line-height:1.4;
 }
 .atlas-tooltip.is-visible{ opacity:1; }
 
@@ -395,11 +470,7 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 /* =========================================================
    13. SIGNALS (MEDIA)
 ========================================================= */
-.signals-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; flex-wrap:wrap; }
-.signals-photo{ margin:0; width:230px; flex-shrink:0; border-radius:12px; overflow:hidden; border:1px solid var(--line); position:relative; }
-.signals-photo img{ display:block; width:100%; height:170px; object-fit:cover; filter:grayscale(0.15) contrast(1.05); }
-.signals-photo figcaption{ font-family:var(--mono); font-size:10px; color:var(--text-faint); padding:8px 10px; letter-spacing:.04em; }
-.signals-grid{ margin-top:56px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; perspective:1400px; }
+.signals-grid{ margin-top:56px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr)); gap:22px; perspective:1400px; }
 .signal-card{
   position:relative; border:1px solid var(--line); border-radius:12px; overflow:hidden;
   opacity:0; transform:translateY(30px) rotateX(6deg); transform-style:preserve-3d;
@@ -427,15 +498,54 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 /* =========================================================
    14. FOUNDATIONS
 ========================================================= */
-.timeline{ margin-top:60px; position:relative; padding-left:32px; max-width:640px; }
-.timeline::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--line-strong); }
-.timeline__item{ position:relative; padding-bottom:36px; opacity:0; transform:translateX(-16px); }
-.timeline__item:last-child{ padding-bottom:0; }
-.timeline__dot{ position:absolute; left:-32px; top:4px; width:11px; height:11px; border-radius:50%; background:var(--bg); border:2px solid var(--cyan); }
-.timeline__eyebrow{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint); margin-bottom:6px; }
-.timeline__item h4{ font-size:18px; margin-bottom:6px; }
-.timeline__item p{ font-size:13.5px; color:var(--text-dim); line-height:1.6; max-width:480px; }
-.badges{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+.foundations-layout{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:50px; margin-top:56px; align-items:start; }
+.foundations-list{ display:flex; flex-direction:column; }
+.foundations-item{
+  display:flex; align-items:center; gap:16px; padding:15px 6px; border-top:1px solid var(--line);
+  cursor:pointer; opacity:0; transform:translateX(-16px); background:none; border-left:0; border-right:0; border-bottom:0;
+  width:100%; text-align:left; font-family:inherit; transition:background .25s var(--ease);
+}
+.foundations-list .foundations-item:last-child{ border-bottom:1px solid var(--line); }
+.foundations-item__dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; background:var(--line-strong); transition:background .25s, box-shadow .25s; }
+.foundations-item.is-active .foundations-item__dot{ background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+.foundations-item__period{ font-family:var(--mono); font-size:10.5px; color:var(--text-faint); width:120px; flex-shrink:0; }
+.foundations-item__title{ font-size:14px; color:var(--text-dim); transition:color .25s; line-height:1.4; }
+.foundations-item:hover .foundations-item__title{ color:var(--text); }
+.foundations-item.is-active .foundations-item__title{ color:var(--text); }
+.foundations-item.is-active{ background:rgba(94,234,212,0.05); }
+
+.foundations-detail{
+  position:sticky; top:120px; padding:32px 34px; border:1px solid var(--line); border-radius:14px;
+  background:linear-gradient(160deg, rgba(255,255,255,.03), transparent 60%);
+  min-height:270px; overflow:hidden;
+}
+.foundations-detail__badge{
+  display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:12px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.04em; margin-bottom:20px;
+  background:rgba(94,234,212,0.12); color:var(--cyan); transition:background .3s, color .3s; position:relative;
+}
+.foundations-detail__badge.is-cert{ background:rgba(155,140,251,0.12); color:var(--violet); }
+.foundations-detail__period{ font-size:11px; color:var(--text-faint); margin-bottom:10px; letter-spacing:.06em; }
+.foundations-detail h3{ font-size:clamp(20px,2.4vw,27px); margin-bottom:6px; line-height:1.25; position:relative; }
+.foundations-detail__org{ font-size:13.5px; color:var(--cyan); margin-bottom:16px; position:relative; }
+.foundations-detail p{ font-size:14px; color:var(--text-dim); line-height:1.7; max-width:420px; position:relative; }
+.foundations-detail__ring{ position:absolute; right:-34px; bottom:-34px; width:190px; height:190px; opacity:.55; pointer-events:none; }
+.fd-ring-a{ fill:none; stroke:var(--line-strong); stroke-width:1; animation:fd-spin 26s linear infinite; transform-origin:90px 90px; }
+.fd-ring-b{ fill:none; stroke:var(--cyan-dim); stroke-width:1; stroke-dasharray:3 9; animation:fd-spin 18s linear infinite reverse; transform-origin:90px 90px; }
+@keyframes fd-spin{ to{ transform:rotate(360deg); } }
+@media (max-width:860px){
+  .foundations-layout{ grid-template-columns:1fr; gap:22px; }
+  .foundations-detail{ position:static; }
+  .foundations-item__period{ width:auto; flex-shrink:0; }
+}
+@media (max-width:480px){
+  .foundations-item{ flex-wrap:wrap; gap:4px 16px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .fd-ring-a, .fd-ring-b{ animation:none; }
+}
+
+.badges{ margin-top:32px; display:flex; gap:10px; flex-wrap:wrap; }
 .badge{ display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--text-dim); border:1px solid var(--line); padding:7px 12px; border-radius:100px; }
 .badge b{ color:var(--text); font-weight:500; }
 .badge i{ width:6px; height:6px; border-radius:50%; background:var(--violet); }
@@ -443,7 +553,7 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 /* =========================================================
    15. LAB
 ========================================================= */
-.lab-grid{ margin-top:56px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px; }
+.lab-grid{ margin-top:56px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr)); gap:18px; }
 .lab-card{
   border:1px solid var(--line); border-radius:12px; padding:24px; cursor:pointer;
   opacity:0; transform:translateY(24px); transition:border-color .3s, background .3s;
@@ -678,6 +788,20 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
         <p class="hero__sub">Dyan Raditya Sinukarta designs <strong>intelligent systems</strong> where AI, computer vision and IoT meet the physical world — and turns that intelligence into software organizations actually run on.</p>
         <p class="hero__tagline">Architecting Intelligence for the Real World</p>
       </div>
+      <div class="hero-orbit" id="heroOrbit" aria-hidden="true">
+        <svg viewBox="0 0 460 460">
+          <circle class="ho-ring ho-ring--1" cx="230" cy="230" r="86"></circle>
+          <circle class="ho-ring ho-ring--2" cx="230" cy="230" r="150"></circle>
+          <circle class="ho-ring ho-ring--3" cx="230" cy="230" r="214"></circle>
+          <g class="ho-spin ho-spin--a"><line class="ho-tick" x1="230" y1="16" x2="230" y2="40"></line></g>
+          <g class="ho-spin ho-spin--b"><circle class="ho-node ho-node--cyan" cx="230" cy="80" r="4.5"></circle></g>
+          <g class="ho-spin ho-spin--c"><circle class="ho-node ho-node--violet" cx="230" cy="380" r="3.5"></circle></g>
+          <g class="ho-spin ho-spin--d"><circle class="ho-node ho-node--blue" cx="444" cy="230" r="5"></circle></g>
+          <g class="ho-spin ho-spin--e"><circle class="ho-node ho-node--cyan" cx="16" cy="230" r="3"></circle></g>
+          <circle class="ho-core" cx="230" cy="230" r="15"></circle>
+          <circle class="ho-core-ring" cx="230" cy="230" r="24"></circle>
+        </svg>
+      </div>
     </div>
     <div class="scroll-cue"><div class="scroll-cue__line"></div>Scroll to enter</div>
   </section>
@@ -685,16 +809,24 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
   <!-- 02 :: THINK -->
   <section class="scene" id="scene-think" data-scene="think">
     <div class="scrim"></div>
+    <div class="think-glow" id="thinkGlow" aria-hidden="true"></div>
     <div class="scene-inner">
       <div class="eyebrow reveal">01 · Philosophy</div>
       <p class="think-quote reveal">“I don't start with <span class="dim">technology.</span><br>I start with the <em style="font-style:normal;color:var(--cyan)">problem.</em>”</p>
-      <div class="flow" aria-hidden="true">
-        <span class="flow__step">Problem</span><span class="flow__arrow">→</span>
-        <span class="flow__step">Data</span><span class="flow__arrow">→</span>
-        <span class="flow__step">Context</span><span class="flow__arrow">→</span>
-        <span class="flow__step is-key">Intelligence</span><span class="flow__arrow">→</span>
-        <span class="flow__step">System</span><span class="flow__arrow">→</span>
-        <span class="flow__step">Impact</span>
+      <div class="flow" id="flowSteps" role="group" aria-label="From problem to impact — click a step for detail">
+        <button class="flow__step" type="button" data-step="problem">Problem</button><span class="flow__arrow">→</span>
+        <button class="flow__step" type="button" data-step="data">Data</button><span class="flow__arrow">→</span>
+        <button class="flow__step" type="button" data-step="context">Context</button><span class="flow__arrow">→</span>
+        <button class="flow__step is-key" type="button" data-step="intelligence">Intelligence</button><span class="flow__arrow">→</span>
+        <button class="flow__step" type="button" data-step="system">System</button><span class="flow__arrow">→</span>
+        <button class="flow__step" type="button" data-step="impact">Impact</button>
+      </div>
+      <div class="flow-detail" id="flowDetail" aria-live="polite">
+        <div class="flow-detail__index mono" id="flowDetailIndex">04 / 06</div>
+        <div>
+          <div class="flow-detail__label" id="flowDetailLabel">Intelligence</div>
+          <p id="flowDetailText">Where reasoning happens — AI, computer vision, or human judgment, applied directly to context.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -724,14 +856,15 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
         <p class="lede reveal">An agent isn't a chat window. It's a loop — one that understands context, plans a path, and follows through.</p>
       </div>
       <div class="pipeline" id="pipelineList">
-        <div class="pipeline__step"><h4>Understand</h4><p>Parse intent and gather the surrounding context — documents, systems, prior state.</p></div>
-        <div class="pipeline__step"><h4>Plan</h4><p>Break the goal into an ordered sequence of achievable steps.</p></div>
-        <div class="pipeline__step"><h4>Reason</h4><p>Weigh options against constraints, risk, and known system behavior.</p></div>
-        <div class="pipeline__step"><h4>Use Tools</h4><p>Call the APIs, databases, or enterprise systems needed to act.</p></div>
-        <div class="pipeline__step"><h4>Execute</h4><p>Carry out the plan, step by step, inside real infrastructure.</p></div>
-        <div class="pipeline__step"><h4>Verify</h4><p>Check the outcome against intent before it's considered done.</p></div>
-        <div class="pipeline__step"><h4>Respond</h4><p>Report back — clearly, with the reasoning available on request.</p></div>
+        <div class="pipeline__step" data-index="0" tabindex="0" role="button" aria-pressed="false"><h4>Understand</h4><p>Parse intent and gather the surrounding context — documents, systems, prior state.</p></div>
+        <div class="pipeline__step" data-index="1" tabindex="0" role="button" aria-pressed="false"><h4>Plan</h4><p>Break the goal into an ordered sequence of achievable steps.</p></div>
+        <div class="pipeline__step" data-index="2" tabindex="0" role="button" aria-pressed="false"><h4>Reason</h4><p>Weigh options against constraints, risk, and known system behavior.</p></div>
+        <div class="pipeline__step" data-index="3" tabindex="0" role="button" aria-pressed="false"><h4>Use Tools</h4><p>Call the APIs, databases, or enterprise systems needed to act.</p></div>
+        <div class="pipeline__step" data-index="4" tabindex="0" role="button" aria-pressed="false"><h4>Execute</h4><p>Carry out the plan, step by step, inside real infrastructure.</p></div>
+        <div class="pipeline__step" data-index="5" tabindex="0" role="button" aria-pressed="false"><h4>Verify</h4><p>Check the outcome against intent before it's considered done.</p></div>
+        <div class="pipeline__step" data-index="6" tabindex="0" role="button" aria-pressed="false"><h4>Respond</h4><p>Report back — clearly, with the reasoning available on request.</p></div>
       </div>
+      <div class="pipeline-status mono" id="pipelineStatus">Click a step to trace the loop through the system</div>
     </div>
   </section>
 
@@ -832,19 +965,13 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
   </section>
 
   <!-- 09 :: SIGNALS -->
-  <section class="scene" id="scene-signals" data-scene="signals">
+  <section class="scene scene--tall" id="scene-signals" data-scene="signals">
     <div class="scrim"></div>
     <div class="scene-inner">
-      <div class="signals-head">
-        <div class="section-head">
-          <div class="eyebrow reveal">08 · Signals</div>
-          <h2 class="reveal">Ideas that leave the system.</h2>
-          <p class="lede reveal">Sharing knowledge, beyond code — talks, panels and features on AI, computer vision and digital transformation.</p>
-        </div>
-        <figure class="signals-photo reveal">
-          <img src="https://itok.web.id/assets/images/speaking.jpg" alt="Dyan Raditya Sinukarta speaking at a technology sharing event" loading="lazy" />
-          <figcaption>PPM Career Preparation event</figcaption>
-        </figure>
+      <div class="section-head">
+        <div class="eyebrow reveal">08 · Signals</div>
+        <h2 class="reveal">Ideas that leave the system.</h2>
+        <p class="lede reveal">Sharing knowledge, beyond code — talks, panels and features on AI, computer vision and digital transformation.</p>
       </div>
       <div class="signals-grid" id="signalsGrid"></div>
     </div>
@@ -857,62 +984,22 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
       <div class="section-head">
         <div class="eyebrow reveal">09 · Foundations</div>
         <h2 class="reveal">What shaped the way I think.</h2>
-        <p class="lede reveal">Academic foundation and continuous certification — the base layer under everything else.</p>
+        <p class="lede reveal">Academic foundation and continuous certification — the base layer under everything else. Click an entry for detail.</p>
       </div>
-      <div class="timeline" id="foundationsTimeline">
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Education · 2007 — 2010</div>
-          <h4>B.Sc., Management Information Systems</h4>
-          <p>Universitas AMIKOM Yogyakarta — graduated <em style="font-style:normal;color:var(--cyan)">Cum Laude</em>, GPA 3.76 / 4.00.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Education · 1997 — 2003</div>
-          <h4>B.A., Communication Science</h4>
-          <p>Universitas Pembangunan Nasional "Veteran" Yogyakarta — member, Communication Student Association (HIMAKOM).</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Education · 1995 — 1997</div>
-          <h4>High School — Social Sciences (IPS)</h4>
-          <p>SMA Pangudi Luhur — OSIS member, Purna Paskibraka Indonesia.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Certification · Google · Feb 2026</div>
-          <h4>Introduction to Large Language Models</h4>
-          <p>Applied LLM concepts, evaluation, and deployment patterns.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Certification · Google Cloud · Feb 2026</div>
-          <h4>Responsible AI: Applying AI Principles</h4>
-          <p>Safety, fairness and governance practices for production AI systems.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Certification · Microsoft · Feb 2026</div>
-          <h4>Foundations of Generative AI for Business Leaders</h4>
-          <p>Applying generative AI to real enterprise workflows and decision-making.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Certification · Google · Sep 2025 — Sep 2028</div>
-          <h4>Gemini Certified Educator</h4>
-          <p>Recognized to teach and guide others on applied use of Gemini.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Certification · Google</div>
-          <h4>Google Analytics Individual Qualification</h4>
-          <p>Measurement, reporting and analysis on the Google Analytics platform.</p>
-        </div>
-        <div class="timeline__item">
-          <div class="timeline__dot"></div>
-          <div class="timeline__eyebrow">Certification · TestDome · Mar 2021</div>
-          <h4>Marketing Analytics</h4>
-          <p>Applied analytics for marketing strategy and decision-making.</p>
+      <div class="foundations-layout">
+        <div class="foundations-list" id="foundationsList" role="list"></div>
+        <div class="foundations-detail" id="foundationsDetail">
+          <div class="foundations-detail__badge" id="foundationsBadge">ED</div>
+          <div class="foundations-detail__period mono" id="foundationsDetailPeriod"></div>
+          <h3 id="foundationsDetailTitle"></h3>
+          <div class="foundations-detail__org" id="foundationsDetailOrg"></div>
+          <p id="foundationsDetailText"></p>
+          <div class="foundations-detail__ring" aria-hidden="true">
+            <svg viewBox="0 0 180 180">
+              <circle class="fd-ring-a" cx="90" cy="90" r="70"></circle>
+              <circle class="fd-ring-b" cx="90" cy="90" r="50"></circle>
+            </svg>
+          </div>
         </div>
       </div>
       <div class="badges" id="foundationsBadges"></div>
@@ -1150,6 +1237,28 @@ const TESTIMONIALS = [
 ];
 
 /* Career — from itok.web.id §02 "Two Decades of Technology Leadership" */
+/* Foundations — education & certifications, click-to-expand on the right panel */
+const FOUNDATIONS = [
+  { cat:'education', period:'2007 — 2010', title:'B.Sc., Management Information Systems', org:'Universitas AMIKOM Yogyakarta',
+    text:'Graduated Cum Laude with a GPA of 3.76 / 4.00 — the technical foundation behind every system built since.' },
+  { cat:'education', period:'1997 — 2003', title:'B.A., Communication Science', org:'Universitas Pembangunan Nasional "Veteran" Yogyakarta',
+    text:'Member of the Communication Student Association (HIMAKOM) — where translating technical ideas into plain language started.' },
+  { cat:'education', period:'1995 — 1997', title:'High School — Social Sciences (IPS)', org:'SMA Pangudi Luhur',
+    text:'OSIS member and Purna Paskibraka Indonesia — early lessons in discipline and organizing people toward a shared goal.' },
+  { cat:'certification', period:'Feb 2026', title:'Introduction to Large Language Models', org:'Google',
+    text:'Applied LLM concepts, evaluation methods, and deployment patterns for production use.' },
+  { cat:'certification', period:'Feb 2026', title:'Responsible AI: Applying AI Principles', org:'Google Cloud',
+    text:'Safety, fairness and governance practices for AI systems running in production.' },
+  { cat:'certification', period:'Feb 2026', title:'Foundations of Generative AI for Business Leaders', org:'Microsoft',
+    text:'Applying generative AI to real enterprise workflows and decision-making, not just demos.' },
+  { cat:'certification', period:'Sep 2025 — Sep 2028', title:'Gemini Certified Educator', org:'Google',
+    text:'Recognized to teach and guide others on the applied use of Gemini across real workflows.' },
+  { cat:'certification', period:'—', title:'Google Analytics Individual Qualification', org:'Google',
+    text:'Measurement, reporting and analysis on the Google Analytics platform.' },
+  { cat:'certification', period:'Mar 2021', title:'Marketing Analytics', org:'TestDome',
+    text:'Applied analytics for marketing strategy and decision-making.' },
+];
+
 const CAREER = [
   { org:'AsiaQuest Indonesia (PT. AQ Business Consulting Indonesia)', role:'Branch Manager', date:'Oct 2016 — Present', span:'9+ years', place:'Yogyakarta, Indonesia',
     desc:'Leading technology consulting and digital transformation initiatives. Designing and implementing AI, IoT and cloud-based enterprise solutions. Delivering intelligent systems including computer vision analytics, smart infrastructure and enterprise platforms for government and enterprise clients.',
@@ -1172,6 +1281,16 @@ const CAREER = [
 ];
 
 const STATUS_LABEL = { delivered:'Delivered' };
+
+/* Philosophy flow — 01 · Think */
+const FLOW_STEPS = [
+  { key:'problem', label:'Problem', color:'94,234,212', text:'Every engagement starts by understanding what\'s actually broken — not which technology to reach for.' },
+  { key:'data', label:'Data', color:'91,141,239', text:'Real signals from the business — operational, financial, sensor-driven, or straight from the people doing the work.' },
+  { key:'context', label:'Context', color:'52,211,153', text:'What that data actually means inside this organization\'s specific constraints, market and history.' },
+  { key:'intelligence', label:'Intelligence', color:'94,234,212', text:'Where reasoning happens — AI, computer vision, or human judgment, applied directly to context.' },
+  { key:'system', label:'System', color:'155,140,251', text:'Intelligence made durable — software the organization can actually run on, every day.' },
+  { key:'impact', label:'Impact', color:'232,176,136', text:'Measured against the original problem — not against how much technology was used to solve it.' },
+];
 
 /* expose to the Three.js module script */
 window.ATLAS_CLUSTERS = ATLAS_CLUSTERS;
@@ -1377,6 +1496,44 @@ const isSmall = window.matchMedia('(max-width:820px)').matches;
     <span class="badge"><i></i><b>3.76</b> / 4.00 GPA, Cum Laude</span>
     <span class="badge"><i></i><b>6</b> professional certifications</span>`;
 
+  // Foundations list — click an entry to expand it in the right-hand detail panel
+  const foundationsList = $('#foundationsList');
+  foundationsList.innerHTML = FOUNDATIONS.map((f,i)=>`
+    <button type="button" class="foundations-item" data-index="${i}" role="listitem" aria-pressed="false">
+      <span class="foundations-item__dot"></span>
+      <span class="foundations-item__period mono">${f.period}</span>
+      <span class="foundations-item__title">${f.title}</span>
+    </button>`).join('');
+  const fdBadge = $('#foundationsBadge');
+  const fdPeriod = $('#foundationsDetailPeriod');
+  const fdTitle = $('#foundationsDetailTitle');
+  const fdOrg = $('#foundationsDetailOrg');
+  const fdText = $('#foundationsDetailText');
+  const fdPanel = $('#foundationsDetail');
+  function showFoundation(i, opts){
+    opts = opts || {};
+    const f = FOUNDATIONS[i];
+    if(!f) return;
+    $$('.foundations-item', foundationsList).forEach((el,idx)=>{
+      el.classList.toggle('is-active', idx===i);
+      el.setAttribute('aria-pressed', idx===i ? 'true':'false');
+    });
+    fdBadge.textContent = f.cat==='education' ? 'ED' : 'CERT';
+    fdBadge.classList.toggle('is-cert', f.cat==='certification');
+    fdPeriod.textContent = (f.cat==='education'?'Education':'Certification') + (f.period!=='—' ? ' · '+f.period : '');
+    fdTitle.textContent = f.title;
+    fdOrg.textContent = f.org;
+    fdText.textContent = f.text;
+    if(!opts.silent && window.gsap && !reduceMotion){
+      gsap.fromTo(fdPanel, { opacity:0.5 }, { opacity:1, duration:0.35, ease:'power2.out' });
+    }
+  }
+  foundationsList.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.foundations-item');
+    if(btn) showFoundation(+btn.dataset.index);
+  });
+  showFoundation(0, { silent:true });
+
   // Career list — full detail, real dates & roles
   const careerList = $('#careerList');
   careerList.innerHTML = CAREER.map(c=>`
@@ -1425,6 +1582,62 @@ gsap.utils.toArray('.flow__step, .flow__arrow').forEach((el,i)=>{
   gsap.to(el, { opacity:1, y:0, duration:0.5, delay:i*0.06, ease:'power2.out',
     scrollTrigger:{ trigger:'.flow', start:'top 82%', once:true } });
 });
+
+/* Philosophy flow interaction — click a step to see its role, with a matching background glow */
+(function flowInteraction(){
+  const wrap = $('#flowSteps');
+  const detail = $('#flowDetail');
+  const glow = $('#thinkGlow');
+  const labelEl = $('#flowDetailLabel');
+  const textEl = $('#flowDetailText');
+  const indexEl = $('#flowDetailIndex');
+  if(!wrap) return;
+  const buttons = $$('.flow__step', wrap);
+
+  function select(key, opts){
+    opts = opts || {};
+    const idx = FLOW_STEPS.findIndex(s=> s.key===key);
+    if(idx < 0) return;
+    const step = FLOW_STEPS[idx];
+    buttons.forEach(b=> b.classList.toggle('is-active', b.dataset.step===key));
+    labelEl.textContent = step.label;
+    textEl.textContent = step.text;
+    indexEl.textContent = String(idx+1).padStart(2,'0') + ' / ' + String(FLOW_STEPS.length).padStart(2,'0');
+    glow.style.background = `radial-gradient(circle, rgba(${step.color},0.2), transparent 62%)`;
+    detail.classList.add('is-visible');
+    if(!opts.silent && !reduceMotion){
+      gsap.fromTo(glow, { opacity:0.4, scale:0.92 }, { opacity:0.85, scale:1, duration:0.6, ease:'power2.out' });
+      gsap.fromTo(detail, { opacity:0.4 }, { opacity:1, duration:0.3 });
+    }
+  }
+  buttons.forEach(b=> b.addEventListener('click', ()=> select(b.dataset.step)));
+  // default state matches the pre-highlighted "Intelligence" pill
+  select('intelligence', { silent:true });
+})();
+
+/* Agentic pipeline interaction — click a step to trace the loop and pulse the 3D particles behind it */
+(function pipelineInteraction(){
+  const steps = $$('.pipeline__step');
+  const status = $('#pipelineStatus');
+  if(!steps.length) return;
+  const titles = steps.map(s=> $('h4', s).textContent);
+  function activate(el){
+    const idx = +el.dataset.index;
+    steps.forEach((s,i)=>{
+      s.classList.toggle('is-active', i===idx);
+      s.classList.toggle('is-passed', i<idx);
+      s.setAttribute('aria-pressed', i===idx ? 'true':'false');
+    });
+    status.textContent = `Step ${idx+1} of ${steps.length} — ${titles[idx]}`;
+    status.classList.add('is-active');
+    window.dispatchEvent(new CustomEvent('agentic:pulse', { detail:{ index:idx, total:steps.length } }));
+  }
+  steps.forEach(el=>{
+    el.addEventListener('click', ()=> activate(el));
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(el); } });
+  });
+})();
+
 gsap.utils.toArray('.pipeline__step').forEach((el,i)=>{
   gsap.to(el, { opacity:1, y:0, duration:0.7, delay:i*0.08, ease:'power3.out',
     scrollTrigger:{ trigger:el, start:'top 90%', once:true } });
@@ -1433,9 +1646,9 @@ gsap.utils.toArray('.arch__layer').forEach((el,i)=>{
   gsap.to(el, { opacity:1, x:0, duration:0.6, delay:i*0.05, ease:'power2.out',
     scrollTrigger:{ trigger:el, start:'top 92%', once:true } });
 });
-gsap.utils.toArray('.timeline__item').forEach((el,i)=>{
-  gsap.to(el, { opacity:1, x:0, duration:0.6, delay:i*0.06, ease:'power2.out',
-    scrollTrigger:{ trigger:el, start:'top 90%', once:true } });
+gsap.utils.toArray('.foundations-item').forEach((el,i)=>{
+  gsap.to(el, { opacity:1, x:0, duration:0.5, delay:i*0.04, ease:'power2.out',
+    scrollTrigger:{ trigger:el, start:'top 94%', once:true } });
 });
 gsap.utils.toArray('.lab-card').forEach((el,i)=>{
   gsap.to(el, { opacity:1, y:0, duration:0.6, delay:(i%3)*0.08, ease:'power2.out',
@@ -1726,6 +1939,8 @@ const agenticGroup = new THREE.Group();
 agenticGroup.position.set(0,0,WORLD.agentic);
 agenticGroup.visible = false; // shown only while #scene-agentic is in view
 scene.add(agenticGroup);
+
+let agenticParticleMat;
 {
   const g = new THREE.BufferGeometry();
   const n = 160; const pos = new Float32Array(n*3);
@@ -1735,9 +1950,42 @@ scene.add(agenticGroup);
     pos[i*3+2] = (Math.random()-0.5)*4;
   }
   g.setAttribute('position', new THREE.BufferAttribute(pos,3));
-  const m = new THREE.PointsMaterial({ color:0x9B8CFB, size:0.045, transparent:true, opacity:0.5 });
-  agenticGroup.add(new THREE.Points(g,m));
+  agenticParticleMat = new THREE.PointsMaterial({ color:0x9B8CFB, size:0.045, transparent:true, opacity:0.5 });
+  agenticGroup.add(new THREE.Points(g, agenticParticleMat));
 }
+
+// Seven nodes tracing the Understand → Respond loop — lit up in sequence
+// when the matching card in the DOM pipeline is clicked (see 'agentic:pulse' below).
+const AGENTIC_STEP_COUNT = 7;
+const agenticNodes = [];
+for(let i=0;i<AGENTIC_STEP_COUNT;i++){
+  const t = i/(AGENTIC_STEP_COUNT-1);
+  const x = (t-0.5)*8.6;
+  const y = Math.sin(t*Math.PI)*1.15 - 0.2;
+  const mat = new THREE.MeshStandardMaterial({ color:0x9B8CFB, emissive:0x9B8CFB, emissiveIntensity:0.15, roughness:0.4, metalness:0.2 });
+  const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16,1), mat);
+  mesh.position.set(x, y, 0);
+  agenticGroup.add(mesh);
+  agenticNodes.push(mesh);
+  if(i>0){
+    const g = new THREE.BufferGeometry().setFromPoints([agenticNodes[i-1].position, mesh.position]);
+    agenticGroup.add(new THREE.Line(g, makeLineMaterial(0x9B8CFB, 0.22)));
+  }
+}
+window.addEventListener('agentic:pulse', (e)=>{
+  const idx = e.detail ? e.detail.index : -1;
+  agenticNodes.forEach((node,i)=>{
+    const active = i<=idx;
+    const delay = active ? i*0.05 : 0;
+    if(window.gsap){
+      gsap.to(node.material, { emissiveIntensity: active?1.2:0.15, duration:0.45, delay, ease:'power2.out' });
+      gsap.to(node.scale, { x:active?1.6:1, y:active?1.6:1, z:active?1.6:1, duration:0.45, delay, ease:'back.out(2)' });
+    }
+  });
+  if(window.gsap){
+    gsap.fromTo(agenticParticleMat, { opacity:0.95 }, { opacity:0.5, duration:1.1, ease:'power2.out' });
+  }
+});
 
 /* =========================================================
    DIGITAL TWIN  (scene 06)
@@ -1950,6 +2198,50 @@ const shell = new THREE.Mesh(new THREE.SphereGeometry(9,24,24), new THREE.MeshBa
 atlasGroup.add(shell);
 
 /* =========================================================
+   SIGNALS (scene 09) — continuous "broadcast" animation
+   Concentric pulse rings + outward-drifting particles, looping the whole
+   time the section is in view — "ideas that leave the system".
+========================================================= */
+const signalsGroup = new THREE.Group();
+signalsGroup.position.set(0, 0.4, WORLD.signals);
+signalsGroup.visible = false; // shown only while #scene-signals is in view
+scene.add(signalsGroup);
+
+const signalsCore = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(0.32, 1),
+  new THREE.MeshStandardMaterial({ color:0x5EEAD4, emissive:0x5EEAD4, emissiveIntensity:0.7 })
+);
+signalsGroup.add(signalsCore);
+
+const SIGNAL_RING_COUNT = 6;
+const signalRings = [];
+const signalRingColors = [0x5EEAD4, 0x9B8CFB, 0x5B8DEF];
+for(let i=0;i<SIGNAL_RING_COUNT;i++){
+  const color = signalRingColors[i % signalRingColors.length];
+  const geo = new THREE.RingGeometry(0.94, 1, 64);
+  const mat = new THREE.MeshBasicMaterial({ color, transparent:true, opacity:0, side:THREE.DoubleSide });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.rotation.x = -Math.PI/2.15;
+  signalsGroup.add(mesh);
+  signalRings.push({ mesh, mat, phase: i / SIGNAL_RING_COUNT });
+}
+
+// Small "idea" particles drifting outward from the core, looping back to center.
+const SIGNAL_PARTICLE_COUNT = 90;
+const signalParticleGeo = new THREE.BufferGeometry();
+const signalParticlePos = new Float32Array(SIGNAL_PARTICLE_COUNT * 3);
+const signalParticleDir = [];
+for(let i=0;i<SIGNAL_PARTICLE_COUNT;i++){
+  const dir = new THREE.Vector3((Math.random()-0.5), (Math.random()-0.5)*0.7, (Math.random()-0.5)).normalize();
+  signalParticleDir.push({ dir, speed: 0.4 + Math.random()*0.6, offset: Math.random()*6 });
+  signalParticlePos[i*3] = 0; signalParticlePos[i*3+1] = 0; signalParticlePos[i*3+2] = 0;
+}
+signalParticleGeo.setAttribute('position', new THREE.BufferAttribute(signalParticlePos, 3));
+const signalParticleMat = new THREE.PointsMaterial({ color:0x5EEAD4, size:0.05, transparent:true, opacity:0.75 });
+const signalParticles = new THREE.Points(signalParticleGeo, signalParticleMat);
+signalsGroup.add(signalParticles);
+
+/* =========================================================
    RAYCAST INTERACTION (Atlas + Intelligence)
 ========================================================= */
 const raycaster = new THREE.Raycaster();
@@ -1986,6 +2278,7 @@ function setCanvasInteractive(on){ canvas.classList.toggle('interactive', on); }
 const sectionFlags = {
   agentic: (v)=>{ agenticGroup.visible = v; },
   vision:  (v)=>{ visionActive = v; },
+  signals: (v)=>{ signalsGroup.visible = v; },
   twin:    (v)=>{
     twinActive = v; twinGroup.visible = v;
     // OrbitControls hijacks touch-drag for orbiting, which would trap mobile
@@ -2168,6 +2461,29 @@ function animate(){
     // atlas gentle auto-rotation + hub pulse
     atlasGroup.rotation.y = t*0.02;
     Object.values(atlasHubs).forEach((h,i)=>{ h.scale.setScalar(1+Math.sin(t*1.2+i)*0.08); });
+
+    // signals — continuous broadcast pulse (loops the whole time the section is visible)
+    if(signalsGroup.visible){
+      signalsCore.scale.setScalar(1 + Math.sin(t*1.8)*0.12);
+      const cycle = 3.2;
+      signalRings.forEach(r=>{
+        const local = ((t/cycle) + r.phase) % 1;
+        const scale = 0.4 + local*4.2;
+        r.mesh.scale.setScalar(scale);
+        r.mat.opacity = Math.max(0, 0.55 * (1 - local));
+      });
+      const posAttr = signalParticleGeo.attributes.position;
+      for(let i=0;i<SIGNAL_PARTICLE_COUNT;i++){
+        const d = signalParticleDir[i];
+        const local = ((t*0.12*d.speed) + d.offset) % 3;
+        const dist = local * 1.9;
+        posAttr.array[i*3]   = d.dir.x * dist;
+        posAttr.array[i*3+1] = d.dir.y * dist;
+        posAttr.array[i*3+2] = d.dir.z * dist;
+      }
+      posAttr.needsUpdate = true;
+      signalsGroup.rotation.y = t*0.05;
+    }
   }
 
   if(twinControls.enabled) twinControls.update();
