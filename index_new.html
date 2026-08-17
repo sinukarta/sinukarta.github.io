@@ -234,44 +234,10 @@ body.menu-open .nav__burger span:nth-child(3){ transform:translateY(-9px) rotate
 @keyframes ho-pulse{ 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(0.82); opacity:.75; } }
 @keyframes ho-ring-pulse{ 0%{ transform:scale(0.9); opacity:.9; } 100%{ transform:scale(1.7); opacity:0; } }
 @media (min-width:1100px){ .hero-orbit{ display:block; } }
-.hero-orbit.is-suppressed{ opacity:0 !important; transition:opacity .6s ease; }
 @media (prefers-reduced-motion: reduce){
   .hero-orbit{ animation:none; opacity:1; }
   .ho-spin, .ho-core, .ho-core-ring{ animation:none; }
 }
-
-/* Hand-controlled cosmic field — opt-in webcam control */
-.hand-control{ margin-top:34px; }
-.hand-control__btn{
-  display:inline-flex; align-items:center; gap:10px; padding:12px 20px;
-  border:1px solid var(--line-strong); border-radius:100px; background:rgba(255,255,255,.02);
-  font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim);
-  cursor:pointer; transition:border-color .3s var(--ease), color .3s var(--ease), background .3s var(--ease);
-}
-.hand-control__btn:hover{ border-color:var(--cyan-dim); color:var(--text); }
-.hand-control__btn.is-active{ border-color:var(--cyan); color:var(--cyan); background:rgba(94,234,212,.07); }
-.hand-control__dot{ width:7px; height:7px; border-radius:50%; background:var(--text-faint); transition:background .3s, box-shadow .3s; flex-shrink:0; }
-.hand-control__btn.is-active .hand-control__dot{ background:var(--cyan); box-shadow:0 0 8px var(--cyan); animation:pulse-dot 1.6s ease-in-out infinite; }
-.hand-control__hint{ margin-top:10px; font-size:11.5px; color:var(--text-faint); max-width:420px; line-height:1.6; }
-
-.hand-preview{
-  position:fixed; right:20px; bottom:20px; z-index:60; width:170px;
-  border:1px solid var(--line-strong); border-radius:12px; overflow:hidden;
-  background:#000; box-shadow:0 20px 50px -12px rgba(0,0,0,.6);
-}
-.hand-preview video{ width:100%; display:block; transform:scaleX(-1); aspect-ratio:4/3; object-fit:cover; }
-.hand-preview__status{
-  position:absolute; left:8px; bottom:8px; right:8px; font-size:9.5px; color:var(--cyan);
-  background:rgba(0,0,0,.55); padding:3px 8px; border-radius:100px; letter-spacing:.03em;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-.hand-preview__close{
-  position:absolute; top:6px; right:6px; width:22px; height:22px; border-radius:50%;
-  background:rgba(0,0,0,.55); color:#fff; display:flex; align-items:center; justify-content:center;
-  border:1px solid rgba(255,255,255,.2);
-}
-.hand-preview__close:hover{ background:rgba(0,0,0,.8); }
-@media (max-width:640px){ .hand-preview{ width:120px; right:12px; bottom:12px; } }
 
 .scroll-cue{
   position:absolute; bottom:48px; left:50%; transform:translateX(-50%);
@@ -821,13 +787,6 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
         <h1>DYAN</h1>
         <p class="hero__sub">Dyan Raditya Sinukarta designs <strong>intelligent systems</strong> where AI, computer vision and IoT meet the physical world — and turns that intelligence into software organizations actually run on.</p>
         <p class="hero__tagline">Architecting Intelligence for the Real World</p>
-        <div class="hand-control" id="handControl">
-          <button class="hand-control__btn" id="handControlBtn" type="button" aria-pressed="false">
-            <span class="hand-control__dot" aria-hidden="true"></span>
-            <span id="handControlLabel">Control the cosmic field with your hand</span>
-          </button>
-          <p class="hand-control__hint">Uses your camera locally in-browser — nothing is recorded or uploaded. Open your hand to spread the particles, make a fist to pull them together.</p>
-        </div>
       </div>
       <div class="hero-orbit" id="heroOrbit" aria-hidden="true">
         <svg viewBox="0 0 460 460">
@@ -842,13 +801,6 @@ html.is-locked, html.is-locked body{ overflow:hidden; height:100%; }
           <circle class="ho-core" cx="230" cy="230" r="15"></circle>
           <circle class="ho-core-ring" cx="230" cy="230" r="24"></circle>
         </svg>
-      </div>
-      <div class="hand-preview" id="handPreview" hidden>
-        <video id="handVideo" playsinline autoplay muted></video>
-        <div class="hand-preview__status mono" id="handPreviewStatus">Starting camera…</div>
-        <button class="hand-preview__close" id="handPreviewClose" type="button" aria-label="Turn off camera">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 1l10 10M11 1L1 11"/></svg>
-        </button>
       </div>
     </div>
     <div class="scroll-cue"><div class="scroll-cue__line"></div>Scroll to enter</div>
@@ -1410,117 +1362,6 @@ const isSmall = window.matchMedia('(max-width:820px)').matches;
 })();
 
 /* =========================================================
-   HAND-CONTROLLED COSMIC FIELD — opt-in webcam hand tracking
-   Loads MediaPipe Hands on demand (only after the visitor clicks the
-   button). All processing happens locally in the browser via WASM —
-   the video frame never leaves the device. The module script below
-   reads window.__hand.openness every frame to drive a 3D particle field.
-========================================================= */
-window.__hand = { openness: 0.2, active: false };
-(function handControl(){
-  const btn = $('#handControlBtn');
-  const label = $('#handControlLabel');
-  const preview = $('#handPreview');
-  const video = $('#handVideo');
-  const status = $('#handPreviewStatus');
-  const closeBtn = $('#handPreviewClose');
-  const heroOrbit = $('#heroOrbit');
-  if(!btn || !video) return;
-
-  let hands = null, stream = null, rafId = null, scriptLoaded = false, running = false;
-  const DEFAULT_LABEL = 'Control the cosmic field with your hand';
-
-  function loadScript(src){
-    return new Promise((resolve, reject)=>{
-      const s = document.createElement('script');
-      s.src = src; s.onload = resolve; s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-  function dist3(a,b){ return Math.hypot(a.x-b.x, a.y-b.y, (a.z-b.z)||0); }
-  function clamp01(v){ return Math.max(0, Math.min(1, v)); }
-
-  function onResults(results){
-    if(results.multiHandLandmarks && results.multiHandLandmarks.length){
-      const lm = results.multiHandLandmarks[0];
-      const scaleRef = dist3(lm[0], lm[9]) || 0.001;
-      const tips = [4,8,12,16,20];
-      let sum = 0;
-      tips.forEach(i=> sum += dist3(lm[i], lm[0]));
-      const ratio = (sum/tips.length) / scaleRef;
-      // empirical range: closed fist ≈1.1-1.3, fully open hand ≈2.0-2.4
-      window.__hand.openness = clamp01((ratio - 1.15) / (2.2 - 1.15));
-      status.textContent = window.__hand.openness > 0.55 ? 'Open hand — spreading' : 'Fist — gathering';
-    } else {
-      status.textContent = 'Show a hand to the camera…';
-    }
-  }
-
-  async function detectLoop(){
-    if(!running) return;
-    if(video.readyState >= 2){
-      try{ await hands.send({ image: video }); }
-      catch(err){ /* ignore transient per-frame decode errors */ }
-    }
-    rafId = requestAnimationFrame(detectLoop);
-  }
-
-  async function start(){
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      label.textContent = 'Camera not supported on this browser';
-      return;
-    }
-    btn.classList.add('is-active');
-    btn.setAttribute('aria-pressed','true');
-    label.textContent = 'Starting…';
-    try{
-      if(!scriptLoaded){
-        await loadScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js');
-        scriptLoaded = true;
-      }
-      stream = await navigator.mediaDevices.getUserMedia({ video:{ width:320, height:240, facingMode:'user' }, audio:false });
-      video.srcObject = stream;
-      await video.play();
-
-      if(!hands){
-        hands = new window.Hands({ locateFile:(f)=> `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
-        hands.setOptions({ maxNumHands:1, modelComplexity:0, minDetectionConfidence:0.6, minTrackingConfidence:0.5 });
-        hands.onResults(onResults);
-      }
-      preview.hidden = false;
-      status.textContent = 'Calibrating…';
-      window.__hand.active = true;
-      running = true;
-      label.textContent = 'Hand control on';
-      if(heroOrbit) heroOrbit.classList.add('is-suppressed');
-      detectLoop();
-    }catch(err){
-      console.warn('Hand control unavailable:', err);
-      label.textContent = 'Camera unavailable — tap to retry';
-      window.__hand.active = false;
-      stop({ keepLabel:true });
-    }
-  }
-
-  function stop(opts){
-    opts = opts || {};
-    running = false;
-    window.__hand.active = false;
-    if(rafId) cancelAnimationFrame(rafId);
-    rafId = null;
-    if(stream){ stream.getTracks().forEach(t=> t.stop()); stream = null; }
-    preview.hidden = true;
-    btn.classList.remove('is-active');
-    btn.setAttribute('aria-pressed','false');
-    if(heroOrbit) heroOrbit.classList.remove('is-suppressed');
-    if(!opts.keepLabel) label.textContent = DEFAULT_LABEL;
-  }
-
-  btn.addEventListener('click', ()=>{ running ? stop() : start(); });
-  closeBtn.addEventListener('click', ()=> stop());
-})();
-
-/* =========================================================
    LOADER / SPLASH — first-touch experience
    Blocks scroll until fonts + the WebGL world are ready (or a
    safety timeout fires), then reveals the hero with a "power on" flash.
@@ -2043,43 +1884,6 @@ const WORLD = {
   twin:-62, systems:-78, atlas:-102, signals:-122, foundations:-132,
   lab:-140, human:-150, beyondwork:-158, testimonials:-166, beyond:-176
 };
-
-/* =========================================================
-   COSMIC FIELD (scene 01 · void) — hand-controlled particle cluster
-   Idle: gently "breathes" open/closed on its own.
-   Once hand control is switched on (see window.__hand in the classic
-   script), it tracks the visitor's hand: open palm spreads the cloud,
-   a closed fist pulls it back together.
-========================================================= */
-const cosmicGroup = new THREE.Group();
-cosmicGroup.position.set(2.7, 0.35, WORLD.void + 2.2); // roughly the empty space right of "DYAN"
-cosmicGroup.visible = false; // only shown once hand control is switched on
-scene.add(cosmicGroup);
-
-const COSMIC_COUNT = isSmall ? 180 : 360;
-const cosmicClosed = new Float32Array(COSMIC_COUNT*3);
-const cosmicOpen = new Float32Array(COSMIC_COUNT*3);
-for(let i=0;i<COSMIC_COUNT;i++){
-  const cr = 0.22 * Math.cbrt(Math.random());
-  const ct = Math.random()*Math.PI*2, cp = Math.acos(2*Math.random()-1);
-  cosmicClosed[i*3]   = cr*Math.sin(cp)*Math.cos(ct);
-  cosmicClosed[i*3+1] = cr*Math.sin(cp)*Math.sin(ct);
-  cosmicClosed[i*3+2] = cr*Math.cos(cp);
-
-  const orr = 0.9 + Math.random()*1.5;
-  const ot = Math.random()*Math.PI*2, op = Math.acos(2*Math.random()-1);
-  cosmicOpen[i*3]   = orr*Math.sin(op)*Math.cos(ot);
-  cosmicOpen[i*3+1] = orr*Math.sin(op)*Math.sin(ot) * 0.8;
-  cosmicOpen[i*3+2] = orr*Math.cos(op);
-}
-const cosmicGeo = new THREE.BufferGeometry();
-cosmicGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(cosmicClosed), 3));
-const cosmicMat = new THREE.PointsMaterial({ color:0x5EEAD4, size:0.05, transparent:true, opacity:0.85, sizeAttenuation:true });
-const cosmicPoints = new THREE.Points(cosmicGeo, cosmicMat);
-cosmicGroup.add(cosmicPoints);
-const cosmicCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.14,1), new THREE.MeshBasicMaterial({ color:0x5EEAD4, transparent:true, opacity:0.7 }));
-cosmicGroup.add(cosmicCore);
-let cosmicSmoothed = 0.15;
 
 /* =========================================================
    INTELLIGENCE GRAPH  (scene 03)
@@ -2679,27 +2483,6 @@ function animate(){
       }
       posAttr.needsUpdate = true;
       signalsGroup.rotation.y = t*0.05;
-    }
-  }
-
-  // Cosmic field — driven by window.__hand (see the hand-control script). Runs even
-  // under reduced-motion since the visitor explicitly opted into this interaction;
-  // it just snaps rather than springs in that case.
-  cosmicGroup.visible = !!(window.__hand && window.__hand.active);
-  if(cosmicGroup.visible){
-    const target = window.__hand.openness;
-    const smoothing = reduceMotion ? 1 : 0.06;
-    cosmicSmoothed += (target - cosmicSmoothed) * smoothing;
-    const cPos = cosmicGeo.attributes.position;
-    for(let i=0;i<COSMIC_COUNT;i++){
-      cPos.array[i*3]   = THREE.MathUtils.lerp(cosmicClosed[i*3],   cosmicOpen[i*3],   cosmicSmoothed);
-      cPos.array[i*3+1] = THREE.MathUtils.lerp(cosmicClosed[i*3+1], cosmicOpen[i*3+1], cosmicSmoothed);
-      cPos.array[i*3+2] = THREE.MathUtils.lerp(cosmicClosed[i*3+2], cosmicOpen[i*3+2], cosmicSmoothed);
-    }
-    cPos.needsUpdate = true;
-    if(!reduceMotion){
-      cosmicGroup.rotation.y = t*0.06;
-      cosmicCore.scale.setScalar(1 - cosmicSmoothed*0.4 + Math.sin(t*2)*0.05);
     }
   }
 
