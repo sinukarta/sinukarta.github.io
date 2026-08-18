@@ -1416,7 +1416,7 @@ const isSmall = window.matchMedia('(max-width:820px)').matches;
    the video frame never leaves the device. The module script below
    reads window.__hand.openness every frame to drive a 3D particle field.
 ========================================================= */
-window.__hand = { openness: 0.2, active: false };
+window.__hand = { openness: 0.2, x: 0.5, y: 0.5, tracking: false, active: false };
 (function handControl(){
   const btn = $('#handControlBtn');
   const label = $('#handControlLabel');
@@ -1427,8 +1427,9 @@ window.__hand = { openness: 0.2, active: false };
   const heroOrbit = $('#heroOrbit');
   if(!btn || !video) return;
 
-  let hands = null, stream = null, rafId = null, scriptLoaded = false, running = false;
+  let hands = null, stream = null, timerId = null, scriptLoaded = false, running = false, sending = false;
   const DEFAULT_LABEL = 'Control the cosmic field with your hand';
+  const DETECT_INTERVAL = 90; // ms between inference calls (~11fps) — keeps the main thread free so scroll/particles stay smooth
 
   function loadScript(src){
     return new Promise((resolve, reject)=>{
@@ -1448,21 +1449,29 @@ window.__hand = { openness: 0.2, active: false };
       let sum = 0;
       tips.forEach(i=> sum += dist3(lm[i], lm[0]));
       const ratio = (sum/tips.length) / scaleRef;
-      // empirical range: closed fist ≈1.1-1.3, fully open hand ≈2.0-2.4
-      window.__hand.openness = clamp01((ratio - 1.15) / (2.2 - 1.15));
+      // Recalibrated so a typical fully-open hand actually reaches 1.0 (a fist sits ≈0.9-1.0, a relaxed open hand ≈1.5-1.9).
+      window.__hand.openness = clamp01((ratio - 0.95) / (1.7 - 0.95));
+      // selfieMode (set below) makes lm[0].x already match what's shown in the mirrored preview:
+      // 0 = visitor's hand at screen-left, 1 = screen-right.
+      window.__hand.x = lm[0].x;
+      window.__hand.y = lm[0].y;
+      window.__hand.tracking = true;
       status.textContent = window.__hand.openness > 0.55 ? 'Open hand — spreading' : 'Fist — gathering';
     } else {
+      window.__hand.tracking = false;
       status.textContent = 'Show a hand to the camera…';
     }
   }
 
-  async function detectLoop(){
+  async function detectTick(){
     if(!running) return;
-    if(video.readyState >= 2){
+    if(video.readyState >= 2 && !sending){
+      sending = true;
       try{ await hands.send({ image: video }); }
       catch(err){ /* ignore transient per-frame decode errors */ }
+      sending = false;
     }
-    rafId = requestAnimationFrame(detectLoop);
+    timerId = setTimeout(detectTick, DETECT_INTERVAL);
   }
 
   async function start(){
@@ -1484,7 +1493,11 @@ window.__hand = { openness: 0.2, active: false };
 
       if(!hands){
         hands = new window.Hands({ locateFile:(f)=> `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
-        hands.setOptions({ maxNumHands:1, modelComplexity:0, minDetectionConfidence:0.6, minTrackingConfidence:0.5 });
+        hands.setOptions({
+          maxNumHands:1, modelComplexity:0,
+          minDetectionConfidence:0.6, minTrackingConfidence:0.5,
+          selfieMode:true // keep landmark X aligned with the mirrored preview, so "move hand right" reads as right
+        });
         hands.onResults(onResults);
       }
       preview.hidden = false;
@@ -1493,7 +1506,7 @@ window.__hand = { openness: 0.2, active: false };
       running = true;
       label.textContent = 'Hand control on';
       if(heroOrbit) heroOrbit.classList.add('is-suppressed');
-      detectLoop();
+      detectTick();
     }catch(err){
       console.warn('Hand control unavailable:', err);
       label.textContent = 'Camera unavailable — tap to retry';
@@ -1506,8 +1519,9 @@ window.__hand = { openness: 0.2, active: false };
     opts = opts || {};
     running = false;
     window.__hand.active = false;
-    if(rafId) cancelAnimationFrame(rafId);
-    rafId = null;
+    window.__hand.tracking = false;
+    if(timerId) clearTimeout(timerId);
+    timerId = null;
     if(stream){ stream.getTracks().forEach(t=> t.stop()); stream = null; }
     preview.hidden = true;
     btn.classList.remove('is-active');
@@ -2048,38 +2062,42 @@ const WORLD = {
    COSMIC FIELD (scene 01 · void) — hand-controlled particle cluster
    Idle: gently "breathes" open/closed on its own.
    Once hand control is switched on (see window.__hand in the classic
-   script), it tracks the visitor's hand: open palm spreads the cloud,
-   a closed fist pulls it back together.
+   script), it tracks the visitor's hand: open palm spreads the cloud
+   wide, a closed fist pulls it back together, and moving the hand
+   left/right/up/down carries the whole cluster with it.
 ========================================================= */
 const cosmicGroup = new THREE.Group();
-cosmicGroup.position.set(2.7, 0.35, WORLD.void + 2.2); // roughly the empty space right of "DYAN"
+const COSMIC_BASE_X = 2.7, COSMIC_BASE_Y = 0.35; // roughly the empty space right of "DYAN"
+cosmicGroup.position.set(COSMIC_BASE_X, COSMIC_BASE_Y, WORLD.void + 2.2);
 cosmicGroup.visible = false; // only shown once hand control is switched on
 scene.add(cosmicGroup);
 
-const COSMIC_COUNT = isSmall ? 180 : 360;
+const COSMIC_COUNT = isSmall ? 220 : 420;
 const cosmicClosed = new Float32Array(COSMIC_COUNT*3);
 const cosmicOpen = new Float32Array(COSMIC_COUNT*3);
 for(let i=0;i<COSMIC_COUNT;i++){
-  const cr = 0.22 * Math.cbrt(Math.random());
+  const cr = 0.2 * Math.cbrt(Math.random());
   const ct = Math.random()*Math.PI*2, cp = Math.acos(2*Math.random()-1);
   cosmicClosed[i*3]   = cr*Math.sin(cp)*Math.cos(ct);
   cosmicClosed[i*3+1] = cr*Math.sin(cp)*Math.sin(ct);
   cosmicClosed[i*3+2] = cr*Math.cos(cp);
 
-  const orr = 0.9 + Math.random()*1.5;
+  // Wide, slightly outer-biased spread — a dramatic "explosion" rather than a tight sphere.
+  const orr = 2.2 + Math.pow(Math.random(), 0.6) * 4.2;
   const ot = Math.random()*Math.PI*2, op = Math.acos(2*Math.random()-1);
   cosmicOpen[i*3]   = orr*Math.sin(op)*Math.cos(ot);
-  cosmicOpen[i*3+1] = orr*Math.sin(op)*Math.sin(ot) * 0.8;
-  cosmicOpen[i*3+2] = orr*Math.cos(op);
+  cosmicOpen[i*3+1] = orr*Math.sin(op)*Math.sin(ot) * 0.75;
+  cosmicOpen[i*3+2] = orr*Math.cos(op) * 0.9;
 }
 const cosmicGeo = new THREE.BufferGeometry();
 cosmicGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(cosmicClosed), 3));
-const cosmicMat = new THREE.PointsMaterial({ color:0x5EEAD4, size:0.05, transparent:true, opacity:0.85, sizeAttenuation:true });
+const cosmicMat = new THREE.PointsMaterial({ color:0x5EEAD4, size:0.06, transparent:true, opacity:0.85, sizeAttenuation:true });
 const cosmicPoints = new THREE.Points(cosmicGeo, cosmicMat);
 cosmicGroup.add(cosmicPoints);
 const cosmicCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.14,1), new THREE.MeshBasicMaterial({ color:0x5EEAD4, transparent:true, opacity:0.7 }));
 cosmicGroup.add(cosmicCore);
 let cosmicSmoothed = 0.15;
+let cosmicPosX = COSMIC_BASE_X, cosmicPosY = COSMIC_BASE_Y;
 
 /* =========================================================
    INTELLIGENCE GRAPH  (scene 03)
@@ -2688,7 +2706,7 @@ function animate(){
   cosmicGroup.visible = !!(window.__hand && window.__hand.active);
   if(cosmicGroup.visible){
     const target = window.__hand.openness;
-    const smoothing = reduceMotion ? 1 : 0.06;
+    const smoothing = reduceMotion ? 1 : 0.1;
     cosmicSmoothed += (target - cosmicSmoothed) * smoothing;
     const cPos = cosmicGeo.attributes.position;
     for(let i=0;i<COSMIC_COUNT;i++){
@@ -2697,6 +2715,19 @@ function animate(){
       cPos.array[i*3+2] = THREE.MathUtils.lerp(cosmicClosed[i*3+2], cosmicOpen[i*3+2], cosmicSmoothed);
     }
     cPos.needsUpdate = true;
+
+    // The whole cluster drifts to follow the hand's position on screen.
+    let targetX = COSMIC_BASE_X, targetY = COSMIC_BASE_Y;
+    if(window.__hand.tracking){
+      targetX = COSMIC_BASE_X + (window.__hand.x - 0.5) * 5.5;
+      targetY = COSMIC_BASE_Y + (0.5 - window.__hand.y) * 3.2;
+    }
+    const posSmoothing = reduceMotion ? 1 : 0.1;
+    cosmicPosX += (targetX - cosmicPosX) * posSmoothing;
+    cosmicPosY += (targetY - cosmicPosY) * posSmoothing;
+    cosmicGroup.position.x = cosmicPosX;
+    cosmicGroup.position.y = cosmicPosY;
+
     if(!reduceMotion){
       cosmicGroup.rotation.y = t*0.06;
       cosmicCore.scale.setScalar(1 - cosmicSmoothed*0.4 + Math.sin(t*2)*0.05);
